@@ -1,7 +1,7 @@
 import "../styles.css";
 import { useState } from "react";
 
-export default function TicketForm() {
+export default function TicketForm({ dispatch }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("1");
@@ -12,10 +12,28 @@ export default function TicketForm() {
     3: "High",
   };
 
+  const ClearForm = () => {
+    setTitle("");
+    setDescription("");
+    setPriority("1");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, just log it
-    console.log({ title, description, priority });
+
+    const ticketData = {
+      id: new Date().toISOString(),
+      title,
+      description,
+      priority,
+    };
+
+    dispatch({
+      type: "ADD_TICKET",
+      payload: ticketData,
+    });
+
+    ClearForm();
   };
 
   return (
